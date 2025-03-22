@@ -28,6 +28,19 @@ public:
     bool signal();
 };
 
+class locker
+{
+private:
+    pthread_mutex_t m_mutex;
+public:
+    locker();
+    ~locker();
+
+    pthread_mutex_t * get();
+    bool lock();
+    bool unlock();
+};
+
 sem::sem()
 {
     if(sem_init(&m_sem, 0, 0) != 0)
@@ -44,18 +57,7 @@ sem::sem(int num)
     }
 }
 
-class locker
-{
-private:
-    pthread_mutex_t m_mutex;
-public:
-    locker();
-    ~locker();
 
-    pthread_mutex_t * get();
-    bool lock();
-    bool unlock();
-};
 
 
 sem::~sem()
