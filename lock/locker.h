@@ -24,7 +24,7 @@ private:
 public:
     cond();
     ~cond();
-    bool wait(pthread_mutex_t mutex);
+    bool wait(pthread_mutex_t * mutex);
     bool signal();
 };
 
@@ -77,7 +77,7 @@ bool sem::post()
 
 
 
-cond::cond(/* args */)
+cond::cond()
 {
     if (pthread_cond_init(&m_cond, NULL) != 0)
     {
@@ -91,11 +91,11 @@ cond::~cond()
     pthread_cond_destroy(&m_cond);
 }
 
-bool cond::wait(pthread_mutex_t mutex)
+bool cond::wait(pthread_mutex_t * mutex)
 {
     int ret = 0;
     //pthread_mutex_lock(&mutex);
-    ret = pthread_cond_wait(&m_cond, &mutex);
+    ret = pthread_cond_wait(&m_cond, mutex);
     //pthread_mutex_unlock(&mutex);
     return ret == 0;
 }
